@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Active Club — Sports Classes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+  <style>
+    /* ====== Base ====== */
+    :root {
+      --brand: #2c3e50;
+      --accent: #e67e22;
+      --accent-dark: #d35400;
+      --cta: #27ae60;
+      --cta-dark: #219150;
+      --bg: #f4f4f4;
+      --card: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    body { font-family: Arial, Helvetica, sans-serif; background: var(--bg); margin: 0; }
+
+    /* ====== Header ====== */
+    header { background: var(--brand); color: #fff; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; }
+    header h1 { margin: 0; font-size: 1.8em; }
+    header button { background: var(--accent); border: none; color: #fff; padding: 10px 20px; cursor: pointer; border-radius: 5px; font-size: 1em; }
+    header button:hover { background: var(--accent-dark); }
+
+    /* ====== Main/Card ====== */
+    main { max-width: 1000px; margin: 40px auto; background: var(--card); padding: 30px; border-radius: 10px; box-shadow: 0 4px 12px rgba(0,0,0,.1); }
+    h2 { margin-top: 0; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+    p { margin: 10px 0; }
+
+    input, select { padding: 8px; margin-top: 5px; width: 100%; max-width: 400px; border: 1px solid #ccc; border-radius: 5px; }
+    input[type="checkbox"], input[type="radio"] { width: auto; margin-right: 5px; }
+
+    button { margin-top: 15px; padding: 10px 20px; background: var(--cta); color: #fff; border: none; border-radius: 5px; cursor: pointer; }
+    button:hover { background: var(--cta-dark); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+
+    .product-card { background: #fff; border: 1px solid #ddd; border-radius: 10px; padding: 15px; box-shadow: 0 2px 6px rgba(0,0,0,.08); display: flex; flex-direction: column; }
+    .product-card img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
+    .product-meta { display: flex; justify-content: space-between; align-items: center; }
+
+    .rating { color: #f1c40f; }
+    .stock { font-weight: bold; margin: 10px 0; }
+
+    .checkout h2 { color: var(--brand); }
+    .checkout p { display: flex; flex-direction: column; margin-bottom: 15px; }
+    .checkout label { font-weight: bold; margin-bottom: 3px; }
+
+    #order-summary { margin-top: 30px; padding: 20px; background: #fafafa; border-radius: 10px; border: 1px solid #eee; }
+    #order-summary h3 { margin-top: 0; }
+
+    .cart-line { display: flex; justify-content: space-between; margin: 6px 0; font-size: .95em; }
+    .muted { color: #666; }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <h1>{{ sitename }}</h1>
+      <button @click="showCheckout">
+        <span class="fas fa-cart-plus" style="margin-right:6px"></span>
+        Checkout <span v-if="cartItemCount">({{ cartItemCount }})</span>
+      </button>
+    </header>
+
+    <main>
+      <!-- ===== Product list ===== -->
+      <div v-if="showProduct">
+        <h2>Book a Class</h2>
+        <div class="grid">
+          <div v-for="product in sortedProducts" :key="product.id" class="product-card">
+            <img :src="product.image" :alt="product.title" />
+            <h3 style="margin:10px 0 6px">{{ product.title }}</h3>
+            <div class="product-meta">
+              <div class="rating">
+                <span v-for="n in product.rating" :key="'s'+n">★</span>
+                <span v-for="n in 5 - product.rating" :key="'o'+n">☆</span>
+              </div>
+              <div><strong>${{ product.price.toFixed(2) }}</strong></div>
+            </div>
+            <p class="muted">Level: {{ product.level }} · Duration: {{ product.duration }}</p>
+            <p v-html="product.description"></p>
+            <p class="stock">
+              <span v-if="product.availableInventory === cartCount(product.id)">Fully booked</span>
+              <span v-else-if="product.availableInventory - cartCount(product.id) < 5">Only {{ product.availableInventory - cartCount(product.id) }} spots left!</span>
+              <span v-else>Spots available</span>
+            </p>
+            <button @click="addToCart(product)" v-if="canAddToCart(product)">Book spot</button>
+            <button disabled v-else>Book spot</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===== Checkout ===== -->
+      <div v-else class="checkout">
+        <h2>Checkout</h2>
+
+        <p>
+          <label for="first">First Name</label>
+          <input id="first" v-model.trim="order.firstName" placeholder="Enter first name" />
+        </p>
+        <p>
+          <label for="last">Last Name</label>
+          <input id="last" v-model.trim="order.lastName" placeholder="Enter last name" />
+        </p>
+        <p>
+          <label for="email">Email</label>
+          <input id="email" v-model.trim="order.email" placeholder="name@example.com" />
+        </p>
+        <p>
+          <label for="city">City</label>
+          <input id="city" v-model="order.city" placeholder="Enter city" />
+        </p>
+        <p>
+          <label for="state">Region/State</label>
+          <select id="state" v-model="order.state">
+            <option disabled value="">Select region</option>
+            <option v-for="(state, key) in states" :value="state">{{ key }}</option>
+          </select>
+        </p>
+        <p>
+          <label for="zip">Postcode</label>
+          <input id="zip" v-model.number="order.zip" type="number" placeholder="Postcode" />
+        </p>
+
+        <p>
+          <label>Experience Level</label>
+          <span>
+            <input type="radio" id="beginner" value="Beginner" v-model="order.experience" />
+            <label for="beginner">Beginner</label>
+            <input type="radio" id="intermediate" value="Intermediate" v-model="order.experience" style="margin-left:10px"/>
+            <label for="intermediate">Intermediate</label>
+            <input type="radio" id="advanced" value="Advanced" v-model="order.experience" style="margin-left:10px"/>
+            <label for="advanced">Advanced</label>
+          </span>
+        </p>
+
+        <p>
+          <input type="checkbox" id="gift" v-model="order.gift" :true-value="order.sendGift" :false-value="order.doNotSendGift" />
+          <label for="gift">Book as a Gift?</label>
+        </p>
+
+        <p>
+          <label for="method">Location Type</label>
+          <span>
+            <input type="radio" id="indoor" value="Indoor" v-model="order.method" />
+            <label for="indoor">Indoor</label>
+            <input type="radio" id="outdoor" value="Outdoor" v-model="order.method" style="margin-left:10px" />
+            <label for="outdoor">Outdoor</label>
+          </span>
+        </p>
+
+        <button @click="submitForm">Place Booking</button>
+
+        <div id="order-summary">
+          <h3>Order Summary</h3>
+          <div v-if="cart.length === 0" class="muted">No classes in cart.</div>
+          <div v-else>
+            <div v-for="line in cartLines" :key="line.id" class="cart-line">
+              <span>{{ line.title }} × {{ line.qty }}</span>
+              <span>${{ (line.qty * line.price).toFixed(2) }}</span>
+            </div>
+            <hr />
+            <div class="cart-line"><strong>Total</strong><strong>${{ cartTotal.toFixed(2) }}</strong></div>
+          </div>
+
+          <hr />
+          <p><strong>Name:</strong> {{ order.firstName }} {{ order.lastName }}</p>
+          <p><strong>Email:</strong> {{ order.email }}</p>
+          <p><strong>City:</strong> {{ order.city }}</p>
+          <p><strong>Region:</strong> {{ order.state }}</p>
+          <p><strong>Postcode:</strong> {{ order.zip }}</p>
+          <p><strong>Experience:</strong> {{ order.experience }}</p>
+          <p><strong>Location Type:</strong> {{ order.method }}</p>
+          <p><strong>Gift:</strong> {{ order.gift }}</p>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // ===== Data: sports classes (football, volleyball, tennis) =====
+    var products = [
+      {
+        id: 2001,
+        title: 'Football Skills',
+        description: 'High-tempo drills covering ball control, passing, and finishing. Small-sided games included.',
+        price: 18.0,
+        image: 'football.jpg',
+        availableInventory: 12,
+        rating: 5,
+        level: 'All levels',
+        duration: '75 min'
+      },
+      {
+        id: 2002,
+        title: 'Volleyball Beginners Class',
+        description: 'Serving and receive fundamentals, footwork, and team rotations. Friendly scrimmage at the end.',
+        price: 15.0,
+        image: 'volleyball.jpg',
+        availableInventory: 8,
+        rating: 4,
+        level: 'Beginner',
+        duration: '60 min'
+      },
+      {
+        id: 2003,
+        title: 'Tennis Intermediate Drills',
+        description: 'Topspin consistency, approach shots, and serve placement. Coach feedback throughout.',
+        price: 22.5,
+        image: 'tennis.jpg',
+        availableInventory: 6,
+        rating: 5,
+        level: 'Intermediate',
+        duration: '90 min'
+      },
+      
+    
+      
+    ];
+
+    var webstore = new Vue({
+      el: '#app',
+      data: {
+        sitename: 'Active Club — Sports Classes',
+        showProduct: true,
+        products: products,
+        cart: [],
+        order: {
+          firstName: '',
+          lastName: '',
+          email: '',
+          city: '',
+          zip: '',
+          state: '',
+          experience: 'Beginner',
+          method: 'Indoor',
+          gift: 'No gift',
+          sendGift: 'Book as gift',
+          doNotSendGift: 'No gift'
+        },
+        states: {
+          'England': 'England',
+          'Scotland': 'Scotland',
+          'Wales': 'Wales',
+          'Northern Ireland': 'Northern Ireland'
+        }
+      },
+      methods: {
+        addToCart(product) { this.cart.push(product.id); },
+        cartCount(id) { return this.cart.filter(item => item === id).length; },
+        canAddToCart(product) { return product.availableInventory > this.cartCount(product.id); },
+        showCheckout() { this.showProduct = !this.showProduct; },
+        submitForm() {
+          if (!this.order.firstName || !this.order.lastName || !this.order.email) {
+            alert('Please fill in your name and email.');
+            return;
+          }
+          alert(`Booking placed by ${this.order.firstName} ${this.order.lastName}!`);
+          this.cart = []; // clear cart after order
+          this.showProduct = true;
+        }
+      },
+      computed: {
+        cartItemCount() { return this.cart.length || ''; },
+        sortedProducts() { return this.products.slice().sort((a,b) => a.price - b.price); },
+        cartLines() {
+          const counts = this.cart.reduce((acc, id) => (acc[id] = (acc[id]||0)+1, acc), {});
+          return this.products
+            .filter(p => counts[p.id])
+            .map(p => ({ id: p.id, title: p.title, price: p.price, qty: counts[p.id] }))
+            .sort((a,b) => a.title.localeCompare(b.title));
+        },
+        cartTotal() { return this.cartLines.reduce((s,l) => s + l.price * l.qty, 0); }
+      }
+    });
+  </script>
+</body>
+</html>
