@@ -1,0 +1,226 @@
+:root {
+  --brand: #2c3e50;
+  --accent: #e67e22;
+  --accent-dark: #d35400;
+  --cta: #27ae60;
+  --cta-dark: #219150;
+  --bg: #f4f4f4;
+  --card: #ffffff;
+  --border: #dddddd;
+  --text-muted: #666;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: var(--bg);
+  margin: 0;
+  color: #222;
+}
+
+/* HEADER */
+header {
+  background: var(--brand);
+  color: #fff;
+  padding: 15px 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.3rem;
+  flex: 1;
+}
+
+.controls-top {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+header select,
+header button,
+header .search-box {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+}
+
+header .search-box {
+  min-width: 140px;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+header button {
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+header button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+header button:not(:disabled):hover {
+  background: var(--accent-dark);
+}
+
+/* MAIN CARD */
+main {
+  max-width: 1000px;
+  margin: 30px auto;
+  background: var(--card);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.08);
+}
+
+h2 {
+  margin-top: 0;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--accent);
+  font-size: 1.2rem;
+}
+
+/* GRID LIST */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.lesson-card {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 15px;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 6px rgba(0,0,0,.06);
+}
+
+.lesson-media {
+  width: 100%;
+  height: 160px;
+  background: #fafafa;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.lesson-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.lesson-title {
+  margin: 0 0 8px;
+  font-size: 1.1rem;
+  color: var(--brand);
+}
+
+.lesson-field {
+  margin: 4px 0;
+  font-size: 0.9rem;
+}
+
+.lesson-desc {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  margin: 10px 0 15px;
+  min-height: 40px;
+}
+
+button {
+  background: var(--cta);
+  border: none;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+button:disabled {
+  opacity: .5;
+  cursor: not-allowed;
+}
+button:not(:disabled):hover {
+  background: var(--cta-dark);
+}
+
+/* CART */
+.cart-list {
+  margin-bottom: 20px;
+}
+.cart-line {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  border-bottom: 1px solid #eee;
+  padding: 10px 0;
+  font-size: 0.95rem;
+  gap: 10px;
+}
+.cart-total-row {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 10px;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* CHECKOUT */
+.checkout-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px,1fr));
+  gap: 15px;
+}
+
+.checkout-form label {
+  display: flex;
+  flex-direction: column;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--brand);
+}
+
+.checkout-form input,
+.checkout-form select {
+  margin-top: 6px;
+  padding: 8px;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-weight: normal;
+  color: #000;
+}
+
+.success-msg {
+  grid-column: 1 / -1;
+  background: #e9ffe9;
+  border: 1px solid #8ad28a;
+  color: #216321;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  font-weight: normal;
+  margin-top: 5px;
+}
+
+.muted {
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
