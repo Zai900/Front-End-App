@@ -224,3 +224,9 @@ button:not(:disabled):hover {
   color: var(--text-muted);
   font-size: 0.9rem;
 }
+footer {
+  text-align: center;
+  color: #555;
+  margin-top: 20px;
+  font-size: 0.9rem;
+}
