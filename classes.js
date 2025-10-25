@@ -52,7 +52,7 @@ const lessons = [
     price: 8,
     spaces: 5,
     description: "Spin control, serve receive, reflex training.",
-    image: "Table Tennis CLub.jpg"
+    image: "Table Tennis Club.jpg"
   },
   {
     id: 7,

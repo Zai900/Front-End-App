@@ -1,4 +1,6 @@
-// app.js
+// app.js// Vue.js app logic for After-School Activity Club
+// Includes lesson list, cart, search, sort, and checkout
+
 new Vue({
   el: '#app',
   data: {
