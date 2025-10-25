@@ -68,7 +68,7 @@
         >
           <!-- icon / image -->
           <div class="lesson-media">
-            <img v-if="lesson.image" :src="lesson.image" :alt="lesson.subject" />
+           <img v-if="lesson.image" :src="lesson.image" :alt="lesson.subject || 'Lesson image'" />
             <i v-else class="fas fa-chalkboard-teacher fa-3x"></i>
           </div>
 
@@ -195,8 +195,6 @@
 <script src="classes.js"></script>
 <!-- then app logic -->
 <script src="app.js"></script>
-<footer>
-  © 2025 After-School Activity Club | CST3144 Coursework
-</footer>
+
 </body>
 </html>
