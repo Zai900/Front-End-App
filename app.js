@@ -113,7 +113,6 @@ new Vue({
     // checkout validation:
     // Name must be letters/spaces only.
     // Phone must be digits only.
-    // Name letters only, phone digits only; also require cart not empty.
     isCheckoutValid() {
       const nameOK = /^[A-Za-z\s]+$/.test(this.checkout.name);
       const phoneOK = /^[0-9]+$/.test(this.checkout.phone);
