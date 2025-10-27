@@ -163,19 +163,13 @@
           />
         </label>
 
-        <!-- extra nice fields (not strictly required but good demo) -->
+        <!-- extra nice fields -->
         <label>
           City
           <input type="text" v-model.trim="checkout.city" />
         </label>
 
-        <label>
-          Gift?
-          <select v-model="checkout.gift">
-            <option>No</option>
-            <option>Yes - this is a gift</option>
-          </select>
-        </label>
+        
 
         <button
           :disabled="!isCheckoutValid"
