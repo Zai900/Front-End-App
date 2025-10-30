@@ -127,7 +127,7 @@
           <div>
             Qty: {{ item.qty }}
           </div>
-
+            
           <div>
             <button @click="removeFromCart(item.id)">Remove 1</button>
           </div>
@@ -163,7 +163,7 @@
           />
         </label>
 
-        <!-- extra nice fields -->
+        <!-- extra fields -->
         <label>
           City
           <input type="text" v-model.trim="checkout.city" />

@@ -7,7 +7,7 @@ const lessons = [
     price: 15,
     spaces: 5,
     description: "Improve ball control, passing, and teamwork fundamentals.",
-    image: "football.jpg"
+    image: "images/football.jpg"
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const lessons = [
     price: 12,
     spaces: 5,
     description: "Serve technique, rally drills, and footwork for beginners.",
-    image: "tennis.jpg"
+    image: "images/tennis.jpg"
   },
   {
     id: 3,
@@ -25,7 +25,7 @@ const lessons = [
     price: 10,
     spaces: 5,
     description: "Learn set, spike, block, and coordinated team play.",
-    image: "volleyball.jpg"
+    image: "images/volleyball.jpg"
   },
   {
     id: 4,
@@ -34,7 +34,7 @@ const lessons = [
     price: 14,
     spaces: 5,
     description: "Dribbling, layups, defence stance, passing under pressure.",
-    image: "basketball.jpg"
+    image: "images/basketball.jpg"
   },
   {
     id: 5,
@@ -43,7 +43,7 @@ const lessons = [
     price: 18,
     spaces: 5,
     description: "Breathing, kicking form, safe movement in water.",
-    image: "Swimming Basics.jpg"
+    image: "images/Swimming Basics.jpg"
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const lessons = [
     price: 8,
     spaces: 5,
     description: "Spin control, serve receive, reflex training.",
-    image: "Table Tennis Club.jpg"
+    image: "images/Table Tennis Club.jpg"
   },
   {
     id: 7,
@@ -61,7 +61,7 @@ const lessons = [
     price: 11,
     spaces: 5,
     description: "Clear, drop, smash drills. Footwork and court awareness.",
-    image: "badminton.jpg"
+    image: "images/badminton.jpg"
   },
   {
     id: 8,
@@ -70,7 +70,7 @@ const lessons = [
     price: 9,
     spaces: 5,
     description: "High-energy music, rhythm, flexibility, confidence building.",
-    image: "Dance fitness.jpg"
+    image: "images/Dance fitness.jpg"
   },
   {
     id: 9,
@@ -79,7 +79,7 @@ const lessons = [
     price: 7,
     spaces: 5,
     description: "Balance, posture, calm breathing and guided recovery.",
-    image: "Yoga & Stretch.jpg"
+    image: "images/Yoga & Stretch.jpg"
   },
   {
     id: 10,
@@ -88,6 +88,6 @@ const lessons = [
     price: 20,
     spaces: 5,
     description: "Beginner-friendly intro to logic, problem solving, and fun apps.",
-    image: "coding for Kids.jpg"
+    image: "images/Coding for Kids.jpg"
   }
 ];
