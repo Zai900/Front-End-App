@@ -5,7 +5,7 @@ new Vue({
   el: '#app',
   data: {
     sitename: "After-School Activity Club",
-    showLessons: true, // true = lesson list, false = cart/checkout
+    showLessons: true, // truez = lesson list, false = cart/checkout
 
     // lesson data
     lessons: lessons, // from classes.js
