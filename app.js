@@ -5,7 +5,7 @@ new Vue({
   el: '#app',
   data: {
     sitename: "After-School Activity Club",
-    showLessons: true, // truez = lesson list, false = cart/checkout
+    showLessons: true, // true = lesson list, false = cart/checkout
 
     // lesson data
     lessons: lessons, // from classes.js
@@ -162,10 +162,7 @@ new Vue({
 
       // show confirmation message for marking D
       this.orderSubmitted = true;
-
-      // in demo you can say:
-      // "This is where we would POST to the Express API for checkout"
-
+      
       // optional: clear cart after submit
       this.cart = [];
     },
