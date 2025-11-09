@@ -230,3 +230,37 @@ footer {
   margin-top: 20px;
   font-size: 0.9rem;
 }
+
+/* -- Sort Dropdown Styling -- */
+.sort-wrapper select {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  color: #000;
+}
+
+/* show placeholder 'Sort' in grey */
+.sort-wrapper select:invalid {
+  color: #888;
+}
+.quantity-control {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 8px 0;
+}
+
+.quantity-control button {
+  background-color: #ffd814;
+  border: none;
+  border-radius: 6px;
+  font-size: 20px;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.quantity-control span {
+  font-weight: bold;
+  font-size: 18px;
+}

@@ -5,7 +5,7 @@ new Vue({
   el: '#app',
   data: {
     sitename: "After-School Activity Club",
-    showLessons: true, // true = lesson list, false = cart/checkout
+    showLessons: true, // truez = lesson list, false = cart/checkout
 
     // lesson data
     lessons: lessons, // from classes.js
@@ -98,7 +98,9 @@ new Vue({
           return {
             id: lesson.id,
             subject: lesson.subject,
+            location: lesson.location,
             price: lesson.price,
+            image: lesson.image,
             qty: counts[lesson.id]
           };
         });
@@ -167,6 +169,40 @@ new Vue({
       // optional: clear cart after submit
       // We DON'T have to clear cart for marks, but it's nice UX:
       this.cart = [];
+    },
+
+    // ============ Quantity buttons ============
+
+    inc(lessonId) {
+      const lesson = this.lessons.find(l => l.id === lessonId);
+      if (lesson && lesson.spaces > 0) {
+        this.cart.push(lessonId);
+        lesson.spaces--;
+      }
+    },
+
+    dec(lessonId) {
+      this.removeFromCart(lessonId);
+    },
+
+    removeAll(lessonId) {
+      const lesson = this.lessons.find(l => l.id === lessonId);
+      let removed = 0;
+      this.cart = this.cart.filter(id => {
+        if (id === lessonId) {
+          removed++;
+          return false;
+        }
+        return true;
+      });
+      if (lesson && removed > 0) {
+        lesson.spaces += removed;
+      }
+    },
+
+    // helper for lesson list disable check
+    inCartCount(id) {
+      return this.cart.filter(i => i === id).length;
     }
   }
 });

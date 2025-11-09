@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>After-School Activity Club</title>
 
   <!-- Font Awesome for icons -->
-  <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 
   <!-- Vue 2 -->
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
@@ -15,185 +15,162 @@
   <!-- Our styles -->
   <link rel="stylesheet" href="style.css" />
 </head>
+
 <body>
-<div id="app">
-  <!-- HEADER -->
-  <header>
-    <h1>{{ sitename }}</h1>
+  <div id="app">
+    <!-- HEADER -->
+    <header>
+      <h1>{{ sitename }}</h1>
 
-    <div class="controls-top">
-      <!-- Search -->
-      <input
-        class="search-box"
-        type="text"
-        placeholder="Search lessons..."
-        v-model.trim="searchText"
-      />
+      <div class="controls-top">
+        <!-- Search -->
+        <input class="search-box" type="text" placeholder="Search lessons..." v-model.trim="searchText" />
 
-      <!-- Sort Attribute -->
-      <select v-model="sortAttribute">
-        <option value="subject">Sort by Subject</option>
-        <option value="location">Sort by Location</option>
-        <option value="price">Sort by Price</option>
-        <option value="spaces">Sort by Spaces</option>
-      </select>
+        <!-- Sort Attribute -->
+        <div class="sort-controls">
+          <label>Sort by:</label>
+          <select v-model="sortAttribute">
+            <option value="subject">Subject</option>
+            <option value="location">Location</option>
+            <option value="price">Price</option>
+            <option value="spaces">Spaces</option>
+          </select>
 
-      <!-- Sort Order -->
-      <select v-model="sortOrder">
-        <option value="asc">↑ Asc</option>
-        <option value="desc">↓ Desc</option>
-      </select>
-
-      <!-- Cart / Checkout toggle -->
-      <button
-        :disabled="cart.length === 0 && showLessons === false"
-        @click="toggleCart"
-      >
-        <span class="fas fa-cart-plus" style="margin-right:6px"></span>
-        Cart <span v-if="cartItemCount">({{ cartItemCount }})</span>
-      </button>
-    </div>
-  </header>
-
-  <main>
-    <!-- ===== LESSON LIST PAGE ===== -->
-    <section v-if="showLessons">
-      <h2>Available Lessons</h2>
-
-      <div class="grid">
-        <div
-          class="lesson-card"
-          v-for="lesson in sortedLessons"
-          :key="lesson.id"
-        >
-          <!-- icon / image -->
-          <div class="lesson-media">
-
-<img v-if="lesson.image" :src="lesson.image" :alt="lesson.subject || 'Lesson image'" />
-            <i v-else class="fas fa-chalkboard-teacher fa-3x"></i>
-          </div>
-
-          <h3 class="lesson-title">{{ lesson.subject }}</h3>
-
-          <p class="lesson-field">
-            <i class="fas fa-map-marker-alt"></i>
-            <strong> Location:</strong> {{ lesson.location }}
-          </p>
-
-          <p class="lesson-field">
-            <i class="fas fa-pound-sign"></i>
-            <strong> Price:</strong> £{{ lesson.price.toFixed(2) }}
-          </p>
-
-          <p class="lesson-field">
-            <i class="fas fa-users"></i>
-            <strong> Spaces:</strong> {{ lesson.spaces }}
-          </p>
-
-          <p class="lesson-desc" v-html="lesson.description"></p>
-
-          <button
-            @click="addToCart(lesson)"
-            :disabled="lesson.spaces === 0"
-          >
-            Add to Cart
-          </button>
-
+          <!-- Sort Order -->
+          <label> Order:</label>
+          <select v-model="sortOrder">
+            <option value="asc">↑ Asc</option>
+            <option value="desc">↓ Desc</option>
+          </select>
         </div>
+
+        <!-- Cart / Checkout toggle -->
+        <button :disabled="cart.length === 0 && showLessons === false" @click="toggleCart">
+          <span class="fas fa-cart-plus" style="margin-right:6px"></span>
+          Cart <span v-if="cartItemCount">({{ cartItemCount }})</span>
+        </button>
       </div>
-    </section>
+    </header>
 
-    <!-- ===== CART + CHECKOUT PAGE ===== -->
-    <section v-else>
-      <h2>Your Cart</h2>
+    <main>
+      <!-- ===== LESSON LIST PAGE ===== -->
+      <section v-if="showLessons">
+        <h2>Available Lessons</h2>
 
-      <div v-if="cartDetails.length === 0" class="muted">
-        Cart is empty.
-      </div>
+        <div class="grid">
+          <div class="lesson-card" v-for="lesson in sortedLessons" :key="lesson.id">
+            <!-- icon / image -->
+            <div class="lesson-media">
+              <img v-if="lesson.image" :src="lesson.image" :alt="lesson.subject || 'Lesson image'" />
+              <i v-else class="fas fa-chalkboard-teacher fa-3x"></i>
+            </div>
 
-      <div v-else class="cart-list">
-        <div
-          class="cart-line"
-          v-for="item in cartDetails"
-          :key="item.id"
-        >
-          <div>
-            <strong>{{ item.subject }}</strong>
-            <div class="muted">
-              £{{ item.price.toFixed(2) }} each
+            <h3 class="lesson-title">{{ lesson.subject }}</h3>
+
+            <p class="lesson-field">
+              <i class="fas fa-map-marker-alt"></i>
+              <strong> Location:</strong> {{ lesson.location }}
+            </p>
+
+            <p class="lesson-field">
+              <i class="fas fa-pound-sign"></i>
+              <strong> Price:</strong> £{{ lesson.price.toFixed(2) }}
+            </p>
+
+            <p class="lesson-field">
+              <i class="fas fa-users"></i>
+              <strong> Spaces:</strong> {{ lesson.spaces }}
+            </p>
+
+            <p class="lesson-desc" v-html="lesson.description"></p>
+
+            <button @click="addToCart(lesson)" :disabled="lesson.spaces === 0">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== CART + CHECKOUT PAGE ===== -->
+      <section v-else>
+        <h2>Your Cart</h2>
+
+        <div v-if="cartDetails.length === 0" class="muted" style="text-align:center;">
+          <p> Your cart is empty.</p>
+          <button @click="showLessons = true">Back to Lessons</button>
+        </div>
+
+        <div v-else class="cart-list">
+          <div class="cart-line" v-for="item in cartDetails" :key="item.id">
+            <div>
+              <strong>{{ item.subject }}</strong>
+              <div class="muted">
+                £{{ item.price.toFixed(2) }} each
+              </div>
+            </div>
+
+            <!-- Quantity controls -->
+            <div class="quantity-control">
+              <span>Quantity:</span>
+              <button @click="dec(item.id)">−</button>
+              <span>{{ item.qty }}</span>
+              <button @click="inc(item.id)">+</button>
+            </div>
+
+            <div style="display:flex; align-items:center; gap:10px;">
+              <strong>£{{ (item.price * item.qty).toFixed(2) }}</strong>
+              <button @click="removeAll(item.id)">Remove</button>
             </div>
           </div>
 
-          <div>
-            Qty: {{ item.qty }}
-          </div>
-
-          <div>
-            <button @click="removeFromCart(item.id)">Remove 1</button>
+          <div class="cart-total-row">
+            <strong>Total:</strong>
+            <strong>£{{ cartTotal.toFixed(2) }}</strong>
           </div>
         </div>
 
-        <div class="cart-total-row">
-          <strong>Total:</strong>
-          <strong>£{{ cartTotal.toFixed(2) }}</strong>
+        <hr />
+
+        <!-- CHECKOUT FORM (Name + Phone are REQUIRED for marks) -->
+        <h2>Checkout</h2>
+
+        <div class="checkout-form">
+          <label>
+            Name
+            <input type="text" v-model.trim="checkout.name" placeholder="Letters only" />
+          </label>
+
+          <label>
+            Phone
+            <input type="text" v-model.trim="checkout.phone" placeholder="Digits only" />
+          </label>
+
+          <label>
+            City
+            <input type="text" v-model.trim="checkout.city" />
+          </label>
+
+          <button :disabled="!isCheckoutValid" @click="submitOrder">
+            Submit Order
+          </button>
+
+          <p v-if="orderSubmitted" class="success-msg">
+            ✅ Order has been submitted. Thank you!
+          </p>
         </div>
-      </div>
+      </section>
+    </main>
+  </div>
 
-      <hr />
+  <!-- data first -->
+  <script src="classes.js"></script>
+  <!-- then app logic -->
+  <script src="app.js"></script>
 
-      <!-- CHECKOUT FORM (Name + Phone are REQUIRED for marks) -->
-      <h2>Checkout</h2>
-
-      <div class="checkout-form">
-        <label>
-          Name
-          <input
-            type="text"
-            v-model.trim="checkout.name"
-            placeholder="Letters only"
-          />
-        </label>
-
-        <label>
-          Phone
-          <input
-            type="text"
-            v-model.trim="checkout.phone"
-            placeholder="Digits only"
-          />
-        </label>
-
-        <!-- extra nice fields -->
-        <label>
-          City
-          <input type="text" v-model.trim="checkout.city" />
-        </label>
-
-        
-
-        <button
-          :disabled="!isCheckoutValid"
-          @click="submitOrder"
-        >
-          Submit Order
-        </button>
-
-        <p v-if="orderSubmitted" class="success-msg">
-          ✅ Order has been submitted. Thank you!
-        </p>
-      </div>
-    </section>
-  </main>
-</div>
-
-<!-- data first -->
-<script src="classes.js"></script>
-<!-- then app logic -->
-<script src="app.js"></script>
-
-<footer>
-  © 2025 After-School Activity Club | CST3144 Coursework
-</footer>
+  <footer>
+    © 2025 After-School Activity Club | CST3144 Coursework
+  </footer>
 
 </body>
+
 </html>
