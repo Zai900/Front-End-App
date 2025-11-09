@@ -167,7 +167,6 @@ new Vue({
       // "This is where we would POST to the Express API for checkout"
 
       // optional: clear cart after submit
-      // We DON'T have to clear cart for marks, but it's nice UX:
       this.cart = [];
     },
 
