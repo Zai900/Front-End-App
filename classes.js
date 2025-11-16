@@ -43,7 +43,7 @@ const lessons = [
     price: 18,
     spaces: 5,
     description: "Breathing, kicking form, safe movement in water.",
-    image: "images/Swimming Basics.jpg"
+    image: "images/swimming-basics.jpg"
   },
   {
     id: 6,
@@ -52,7 +52,7 @@ const lessons = [
     price: 8,
     spaces: 5,
     description: "Spin control, serve receive, reflex training.",
-    image: "images/Table Tennis Club.jpg"
+    image: "images/table-tennis-club.jpg"
   },
   {
     id: 7,
@@ -70,7 +70,7 @@ const lessons = [
     price: 9,
     spaces: 5,
     description: "High-energy music, rhythm, flexibility, confidence building.",
-    image: "images/Dance fitness.jpg"
+    image: "images/dance-fitness.jpg"
   },
   {
     id: 9,
@@ -79,7 +79,7 @@ const lessons = [
     price: 7,
     spaces: 5,
     description: "Balance, posture, calm breathing and guided recovery.",
-    image: "images/Yoga & Stretch.jpg"
+    image: "images/Yoga-Stretch.jpg"
   },
   {
     id: 10,
@@ -88,6 +88,6 @@ const lessons = [
     price: 20,
     spaces: 5,
     description: "Beginner-friendly intro to logic, problem solving, and fun apps.",
-    image: "images/Coding for Kids.jpg"
+    image: "images/coding-for-kids.jpg"
   }
 ];
