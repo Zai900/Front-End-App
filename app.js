@@ -154,18 +154,26 @@ new Vue({
       }
     },
 
-    submitOrder() {
-      if (!this.isCheckoutValid) {
-        alert("Please enter valid Name (letters only) and Phone (numbers only).");
-        return;
-      }
+   submitOrder() {
+  if (!this.isCheckoutValid) {
+    alert("Please enter valid Name (letters only) and Phone (numbers only).");
+    return;
+  }
 
-      // show confirmation message for marking D
-      this.orderSubmitted = true;
-      
-      // optional: clear cart after submit
-      this.cart = [];
-    },
+  // show confirmation message for marking D
+  this.orderSubmitted = true;
+
+  // === reset ALL lesson spaces back to 5 ===
+  this.lessons.forEach(lesson => {
+    lesson.spaces = 5;
+  });
+
+  // === clear cart ===
+  this.cart = [];
+
+  // (optional) log to make sure this runs
+  console.log("Order submitted, spaces reset to 5, cart cleared");
+},
 
     // ============ Quantity buttons ============
 

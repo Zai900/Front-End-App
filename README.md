@@ -1,4 +1,4 @@
-# After-School Activity Club — Front-End (Vue.js)
+# Zainab_backend
 
 This is the front-end for my CST3144 Full Stack Development coursework.
 Displays lessons (subject, location, price, spaces, image)
