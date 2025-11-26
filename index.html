@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
 
   <!-- Vue 2 -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
 
   <!-- Our styles -->
   <link rel="stylesheet" href="style.css" />
@@ -37,7 +37,7 @@
           </select>
 
           <!-- Sort Order -->
-          <label> Order:</label>
+          <label>Order:</label>
           <select v-model="sortOrder">
             <option value="asc">↑ Asc</option>
             <option value="desc">↓ Desc</option>
@@ -45,7 +45,7 @@
         </div>
 
         <!-- Cart / Checkout toggle -->
-        <button :disabled="cart.length === 0 && showLessons === false" @click="toggleCart">
+        <button :disabled="cart.length === 0 && !showLessons" @click="toggleCart">
           <span class="fas fa-cart-plus" style="margin-right:6px"></span>
           Cart <span v-if="cartItemCount">({{ cartItemCount }})</span>
         </button>
@@ -57,11 +57,14 @@
       <section v-if="showLessons">
         <h2>Available Lessons</h2>
 
+        <p v-if="loadingLessons" class="muted">Loading lessons...</p>
+        <p v-if="loadError" class="error-msg">{{ loadError }}</p>
+
         <div class="grid">
-          <div class="lesson-card" v-for="lesson in sortedLessons" :key="lesson.id">
+          <div class="lesson-card" v-for="lesson in sortedLessons" :key="lesson._id">
             <!-- icon / image -->
             <div class="lesson-media">
-              <img v-if="lesson.image" :src="lesson.image" :alt="lesson.subject || 'Lesson image'" />
+              <img v-if="lesson.image" :src="imageSrc(lesson.image)" :alt="lesson.subject || 'Lesson image'" />
               <i v-else class="fas fa-chalkboard-teacher fa-3x"></i>
             </div>
 
@@ -82,9 +85,11 @@
               <strong> Spaces:</strong> {{ lesson.spaces }}
             </p>
 
-            <p class="lesson-desc" v-html="lesson.description"></p>
+            <p class="lesson-desc" v-if="lesson.description">
+              {{ lesson.description }}
+            </p>
 
-            <button @click="addToCart(lesson)" :disabled="lesson.spaces === 0">
+            <button @click="addToCart(lesson)" :disabled="!canAddToCart(lesson)">
               Add to Cart
             </button>
           </div>
@@ -95,9 +100,13 @@
       <section v-else>
         <h2>Your Cart</h2>
 
+        <!-- Return button -->
+        <button @click="toggleCart" style="margin-bottom: 1rem;">
+          ← Back to Lessons
+        </button>
+
         <div v-if="cartDetails.length === 0" class="muted" style="text-align:center;">
-          <p> Your cart is empty.</p>
-          <button @click="showLessons = true">Back to Lessons</button>
+          <p>Your cart is empty.</p>
         </div>
 
         <div v-else class="cart-list">
@@ -109,7 +118,7 @@
               </div>
             </div>
 
-            <!-- Quantity controls -->
+            <!-- QUANTITY BUTTONS -->
             <div class="quantity-control">
               <span>Quantity:</span>
               <button @click="dec(item.id)">−</button>
@@ -131,7 +140,7 @@
 
         <hr />
 
-        <!-- CHECKOUT FORM (Name + Phone are REQUIRED for marks) -->
+        <!-- CHECKOUT FORM -->
         <h2>Checkout</h2>
 
         <div class="checkout-form">
@@ -154,6 +163,10 @@
             Submit Order
           </button>
 
+          <p v-if="submitError" class="error-msg">
+            {{ submitError }}
+          </p>
+
           <p v-if="orderSubmitted" class="success-msg">
             ✅ Order has been submitted. Thank you!
           </p>
@@ -162,15 +175,12 @@
     </main>
   </div>
 
-  <!-- data first -->
-  <script src="classes.js"></script>
-  <!-- then app logic -->
+  <!-- Only app.js: lessons now come from backend -->
   <script src="app.js"></script>
 
   <footer>
     © 2025 After-School Activity Club | CST3144 Coursework
   </footer>
-
 </body>
 
 </html>
