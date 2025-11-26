@@ -58,36 +58,4 @@ const lessons = [
     id: 7,
     subject: "Badminton Coaching",
     location: "Sports Hall C",
-    price: 11,
-    spaces: 5,
-    description: "Clear, drop, smash drills. Footwork and court awareness.",
-    image: "images/badminton.jpg"
-  },
-  {
-    id: 8,
-    subject: "Dance Fitness",
-    location: "Studio 1",
-    price: 9,
-    spaces: 5,
-    description: "High-energy music, rhythm, flexibility, confidence building.",
-    image: "images/dance-fitness.jpg"
-  },
-  {
-    id: 9,
-    subject: "Yoga & Stretch",
-    location: "Studio 2",
-    price: 7,
-    spaces: 5,
-    description: "Balance, posture, calm breathing and guided recovery.",
-    image: "images/Yoga-Stretch.jpg"
-  },
-  {
-    id: 10,
-    subject: "Coding for Kids",
-    location: "IT Lab",
-    price: 20,
-    spaces: 5,
-    description: "Beginner-friendly intro to logic, problem solving, and fun apps.",
-    image: "images/coding-for-kids.jpg"
-  }
-];
+    price

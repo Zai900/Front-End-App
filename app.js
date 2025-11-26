@@ -1,7 +1,8 @@
 // app.js — Vue.js logic with quantity + reset ALL spaces to 5 after order
 
-const API_BASE = "http://localhost:5000";  
-// IMPORTANT: When deploying to GitHub Pages + Render, change to:
+// LOCAL development:
+const API_BASE = "http://localhost:5000";
+// For deployment to Render.com, change to:
 // const API_BASE = "https://zainab-backend.onrender.com";
 
 new Vue({
@@ -9,10 +10,11 @@ new Vue({
 
   data: {
     sitename: "After-School Activity Club",
-    showLessons: true,
 
-    lessons: [],
-    cart: [],          // store lesson IDs
+    showLessons: true,        // true = lessons list, false = cart/checkout
+
+    lessons: [],              // loaded from backend
+    cart: [],                 // stores lesson IDs (_id from MongoDB)
 
     searchText: "",
     sortAttribute: "subject",
@@ -72,21 +74,26 @@ new Vue({
 
     // Build quantity breakdown from cart IDs
     cartDetails() {
-      const map = {};
+      const counts = {};
+
+      // count how many times each lesson ID appears in cart
       this.cart.forEach((id) => {
-        if (!map[id]) {
-          const lesson = this.lessons.find((l) => l._id === id);
-          if (!lesson) return;
-          map[id] = {
-            id,
-            subject: lesson.subject,
-            price: lesson.price,
-            qty: 0,
-          };
-        }
-        map[id].qty += 1;
+        counts[id] = (counts[id] || 0) + 1;
       });
-      return Object.values(map);
+
+      // convert to array with lesson info
+      return Object.keys(counts).map((id) => {
+        const lesson = this.lessons.find((l) => l._id === id);
+
+        return {
+          id,
+          subject: lesson ? lesson.subject : "Unknown lesson",
+          location: lesson ? lesson.location : "",
+          price: lesson ? lesson.price : 0,
+          image: lesson ? lesson.image : "",
+          qty: counts[id],
+        };
+      });
     },
 
     cartTotal() {
@@ -140,6 +147,7 @@ new Vue({
       lesson.spaces--;
     },
 
+    // increase quantity in cart for a given lesson id
     inc(id) {
       const lesson = this.lessons.find((l) => l._id === id);
       if (!lesson || lesson.spaces === 0) return;
@@ -147,6 +155,7 @@ new Vue({
       lesson.spaces--;
     },
 
+    // decrease quantity in cart for a given lesson id
     dec(id) {
       const index = this.cart.findIndex((cartId) => cartId === id);
       if (index === -1) return;
@@ -155,6 +164,7 @@ new Vue({
       if (lesson) lesson.spaces++;
     },
 
+    // remove ALL of one lesson from cart
     removeAll(id) {
       const count = this.cart.filter((cartId) => cartId === id).length;
       if (count === 0) return;
@@ -198,7 +208,7 @@ new Vue({
           throw new Error(errBody.error || "Failed to submit order");
         }
 
-        // Reset ALL lessons back to 5
+        // Reset ALL lessons back to 5 spaces via PUT
         for (const lesson of this.lessons) {
           await fetch(`${API_BASE}/lessons/${lesson._id}`, {
             method: "PUT",
