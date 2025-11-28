@@ -1,9 +1,9 @@
 // app.js — Vue.js logic with quantity + reset ALL spaces to 5 after order
 
 // LOCAL development:
-const API_BASE = "http://localhost:5000";
+//const API_BASE = "http://localhost:5000";
 // For deployment to Render.com, change to:
-// const API_BASE = "https://zainab-backend.onrender.com";
+const API_BASE = "https://zainab-backend.onrender.com";
 
 new Vue({
   el: "#app",
